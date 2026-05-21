@@ -241,34 +241,6 @@ function placeMenuButton(button = document.getElementById(BUTTON_ID)) {
     }
 }
 
-function scheduleMenuPlacement() {
-    let attempts = 0;
-    let timer = null;
-    const maxAttempts = 20;
-    const intervalMs = 500;
-
-    const tryPlace = () => {
-        attempts += 1;
-        createMenuButton();
-
-        const menu = document.getElementById('extensionsMenu');
-        const button = document.getElementById(BUTTON_ID);
-        if (menu && button && menu.contains(button)) {
-            const charButton = document.getElementById('charManagerBtn');
-            if (charButton && charButton.nextElementSibling !== button) {
-                placeMenuButton(button);
-            }
-        }
-
-        if (attempts >= maxAttempts) {
-            clearInterval(timer);
-        }
-    };
-
-    tryPlace();
-    timer = setInterval(tryPlace, intervalMs);
-}
-
 function ensureModal() {
     let modal = document.getElementById(MODAL_ID);
     if (modal) return modal;
@@ -687,8 +659,9 @@ function moduleDown(event) {
 
 function init() {
     ensureSettings();
+    globalThis.openPresetQuickNotex = openModal;
+    globalThis.closePresetQuickNotex = closeModal;
     createMenuButton();
-    scheduleMenuPlacement();
     eventSource.on(event_types.PRESET_CHANGED, event => {
         if (event?.apiId === 'openai' && document.getElementById(MODAL_ID)?.classList.contains('pqn-open')) {
             renderModal();

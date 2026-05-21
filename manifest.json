@@ -6,7 +6,7 @@
     "js": "index.js",
     "css": "style.css",
     "author": "User",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "homePage": "https://github.com/relax-sketch/preset-quick-notex",
     "description": "快捷编辑当前对话补全预设中的 Prompt Manager 提示词条目。"
 }
