@@ -4,7 +4,7 @@ SillyTavern third-party extension for quickly editing Prompt Manager entries in 
 
 ## Features
 
-- Exposes `window.openPresetQuickNotex()` for external launch buttons.
+- Exposes `window.openPresetQuickNotex()` for external launch buttons; the extension itself does not create a persistent launcher.
 - Includes `tavern-helper-button.js`, a companion Tavern Helper script that adds a lightweight button without DOM observers.
 - Binds multiple quick-edit profiles to Chat Completion Prompt Manager entries by `identifier`.
 - Saves edits back to the currently selected Chat Completion preset without reloading the page.

@@ -14,7 +14,6 @@ import {
 } from '../../../openai.js';
 
 const MODULE_NAME = 'presetQuickNote';
-const BUTTON_ID = 'pqnMenuButton';
 const MODAL_ID = 'pqnModal';
 const NOTE_OPEN = '<本次内容注意>';
 const NOTE_CLOSE = '</本次内容注意>';
@@ -207,38 +206,6 @@ async function saveCurrentPresetWithoutRefresh() {
     const name = getCurrentPresetName();
     const preset = getCurrentPresetObject();
     await manager.savePreset(name, preset, { skipUpdate: true });
-}
-
-function createMenuButton() {
-    let button = document.getElementById(BUTTON_ID);
-    if (!button) {
-        button = document.createElement('div');
-        button.id = BUTTON_ID;
-        button.className = 'list-group-item flex-container flexGap5 interactable';
-        button.tabIndex = 0;
-        button.innerHTML = '<span class="fa-solid fa-note-sticky"></span><span>预设快捷提示词</span>';
-        button.addEventListener('click', openModal);
-        button.addEventListener('keydown', event => {
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                openModal();
-            }
-        });
-    }
-
-    placeMenuButton(button);
-}
-
-function placeMenuButton(button = document.getElementById(BUTTON_ID)) {
-    const menu = document.getElementById('extensionsMenu');
-    if (!menu || !button) return;
-
-    const charButton = document.getElementById('charManagerBtn');
-    if (charButton && charButton.parentElement === menu) {
-        charButton.insertAdjacentElement('afterend', button);
-    } else if (!menu.contains(button)) {
-        menu.prepend(button);
-    }
 }
 
 function ensureModal() {
@@ -661,7 +628,6 @@ function init() {
     ensureSettings();
     globalThis.openPresetQuickNotex = openModal;
     globalThis.closePresetQuickNotex = closeModal;
-    createMenuButton();
     eventSource.on(event_types.PRESET_CHANGED, event => {
         if (event?.apiId === 'openai' && document.getElementById(MODAL_ID)?.classList.contains('pqn-open')) {
             renderModal();
