@@ -241,9 +241,32 @@ function placeMenuButton(button = document.getElementById(BUTTON_ID)) {
     }
 }
 
-function observeMenuPlacement() {
-    const observer = new MutationObserver(() => placeMenuButton());
-    observer.observe(document.body, { childList: true, subtree: true });
+function scheduleMenuPlacement() {
+    let attempts = 0;
+    let timer = null;
+    const maxAttempts = 20;
+    const intervalMs = 500;
+
+    const tryPlace = () => {
+        attempts += 1;
+        createMenuButton();
+
+        const menu = document.getElementById('extensionsMenu');
+        const button = document.getElementById(BUTTON_ID);
+        if (menu && button && menu.contains(button)) {
+            const charButton = document.getElementById('charManagerBtn');
+            if (charButton && charButton.nextElementSibling !== button) {
+                placeMenuButton(button);
+            }
+        }
+
+        if (attempts >= maxAttempts) {
+            clearInterval(timer);
+        }
+    };
+
+    tryPlace();
+    timer = setInterval(tryPlace, intervalMs);
 }
 
 function ensureModal() {
@@ -665,7 +688,7 @@ function moduleDown(event) {
 function init() {
     ensureSettings();
     createMenuButton();
-    observeMenuPlacement();
+    scheduleMenuPlacement();
     eventSource.on(event_types.PRESET_CHANGED, event => {
         if (event?.apiId === 'openai' && document.getElementById(MODAL_ID)?.classList.contains('pqn-open')) {
             renderModal();
