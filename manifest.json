@@ -1,0 +1,12 @@
+{
+    "display_name": "预设快捷提示词",
+    "loading_order": 9100,
+    "requires": [],
+    "optional": [],
+    "js": "index.js",
+    "css": "style.css",
+    "author": "User",
+    "version": "1.0.0",
+    "homePage": "https://github.com/relax-sketch/preset-quick-notex",
+    "description": "快捷编辑当前对话补全预设中的 Prompt Manager 提示词条目。"
+}
