@@ -15,6 +15,8 @@
 
     const MENU_BUTTON_ID = 'pqnHelperMenuButton';
     const CHAT_BUTTON_ID = 'pqnHelperChatButton';
+    const COMPOSER_BAR_ID = 'pqnHelperComposerBar';
+    const COMPOSER_BUTTON_ID = 'pqnHelperComposerButton';
     const MAX_ATTEMPTS = 20;
     const INTERVAL_MS = 500;
 
@@ -75,6 +77,26 @@
         return button;
     }
 
+    function buildComposerButton() {
+        const button = doc.createElement('button');
+        button.type = 'button';
+        button.id = COMPOSER_BUTTON_ID;
+        button.className = 'menu_button interactable';
+        button.title = '预设快捷提示词';
+        button.innerHTML = '<span class="fa-solid fa-note-sticky"></span><span>预设快捷提示词</span>';
+        button.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:30px;padding:4px 10px;white-space:nowrap;';
+        button.addEventListener('click', openPresetQuickNotex);
+        return button;
+    }
+
+    function getSendForm() {
+        const sendTextarea = doc.getElementById('send_textarea') || doc.querySelector('[name="send_textarea"]');
+        return (
+            doc.getElementById('leftSendForm') ||
+            sendTextarea?.closest('form, .flex-container, .send-form, .send_form')
+        );
+    }
+
     function placeMenuButton() {
         const menu = doc.getElementById('extensionsMenu') || doc.getElementById('extensions_menu');
         if (!menu) return false;
@@ -88,6 +110,26 @@
             }
         } else if (!menu.contains(button)) {
             menu.prepend(button);
+        }
+
+        return true;
+    }
+
+    function placeComposerButton() {
+        const sendForm = getSendForm();
+        if (!sendForm) return false;
+
+        const bar = doc.getElementById(COMPOSER_BAR_ID) || doc.createElement('div');
+        bar.id = COMPOSER_BAR_ID;
+        bar.style.cssText = 'display:flex;align-items:center;gap:6px;flex:1 0 100%;width:100%;order:-1000;margin:0 0 6px 0;';
+
+        const button = doc.getElementById(COMPOSER_BUTTON_ID) || buildComposerButton();
+        if (!bar.contains(button)) {
+            bar.appendChild(button);
+        }
+
+        if (bar.parentElement !== sendForm) {
+            sendForm.prepend(bar);
         }
 
         return true;
@@ -108,15 +150,17 @@
     function tryInstallButtons() {
         let attempts = 0;
         let menuPlaced = false;
+        let composerPlaced = false;
         let chatPlaced = false;
         let timer = null;
 
         const tick = () => {
             attempts += 1;
             menuPlaced = placeMenuButton() || menuPlaced;
+            composerPlaced = placeComposerButton() || composerPlaced;
             chatPlaced = placeChatButton() || chatPlaced;
 
-            if (timer && ((menuPlaced && chatPlaced) || attempts >= MAX_ATTEMPTS)) {
+            if (timer && ((menuPlaced && composerPlaced && chatPlaced) || attempts >= MAX_ATTEMPTS)) {
                 clearInterval(timer);
             }
         };

@@ -9,6 +9,8 @@
     display: none;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
+    padding: 12px;
     background: rgba(0, 0, 0, 0.55);
 }
 
@@ -17,8 +19,9 @@
 }
 
 .pqn-panel {
-    width: min(880px, calc(100vw - 28px));
-    max-height: min(760px, calc(100vh - 28px));
+    width: min(920px, 100%);
+    max-height: min(820px, calc(100vh - 24px));
+    max-height: min(820px, calc(100dvh - 24px));
     display: flex;
     flex-direction: column;
     background: var(--SmartThemeBlurTintColor, #1f1f1f);
@@ -27,6 +30,13 @@
     border-radius: 8px;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
     overflow: hidden;
+}
+
+.pqn-panel,
+.pqn-body,
+.pqn-grid,
+.pqn-column {
+    box-sizing: border-box;
 }
 
 .pqn-header,
@@ -41,6 +51,10 @@
     gap: 8px;
 }
 
+.pqn-row {
+    flex-wrap: wrap;
+}
+
 .pqn-header {
     padding: 10px 12px;
     border-bottom: 1px solid var(--SmartThemeBorderColor, #555);
@@ -52,8 +66,11 @@
 }
 
 .pqn-body {
+    flex: 1 1 auto;
+    min-height: 0;
     padding: 12px;
-    overflow: auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
 }
 
 .pqn-tabs {
@@ -84,6 +101,7 @@
 .pqn-grid {
     display: grid;
     grid-template-columns: minmax(180px, 260px) minmax(0, 1fr);
+    align-items: start;
     gap: 12px;
 }
 
@@ -165,19 +183,19 @@
 
 @media (max-width: 720px) {
     #pqnModal {
-        align-items: flex-end;
+        align-items: stretch;
         justify-content: stretch;
+        padding: 0;
         background: rgba(0, 0, 0, 0.38);
     }
 
     .pqn-panel {
         width: 100vw;
-        height: min(92dvh, calc(100dvh - 10px));
-        max-height: none;
-        border-right: 0;
-        border-bottom: 0;
-        border-left: 0;
-        border-radius: 10px 10px 0 0;
+        height: 100vh;
+        height: 100dvh;
+        max-height: 100dvh;
+        border: 0;
+        border-radius: 0;
     }
 
     .pqn-header,
@@ -191,7 +209,10 @@
     }
 
     .pqn-body {
+        flex: 1 1 auto;
+        min-height: 0;
         padding: 10px max(10px, env(safe-area-inset-right)) 12px max(10px, env(safe-area-inset-left));
+        -webkit-overflow-scrolling: touch;
     }
 
     .pqn-tabs {

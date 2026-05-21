@@ -34,6 +34,7 @@ Restart or reload SillyTavern after installing.
 If the built-in wand-menu entry is not visible on mobile, import `tavern-helper-button.json` into Tavern Helper, or paste the contents of `tavern-helper-button.js` into a script. It adds:
 
 - a wand-menu entry after the character-card manager button when present;
-- a compact note icon in the chat input button area.
+- a compact note icon in the chat input button area;
+- a full-width shortcut row above the chat input box for easier mobile access.
 
 The helper uses a short retry loop only. It does not use `MutationObserver`.
