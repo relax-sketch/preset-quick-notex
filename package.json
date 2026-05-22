@@ -4,6 +4,6 @@
     "type": "module",
     "private": true,
     "scripts": {
-        "check": "node --check index.js"
+        "check": "node --check index.js && node --check tavern-helper-button.js && node --test tests"
     }
 }
